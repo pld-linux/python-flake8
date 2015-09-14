@@ -5,7 +5,7 @@
 Summary:	The modular source code checker: pep8, pyflakes and co
 Name:		flake8
 Version:	2.2.5
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Tools
 Source0:	https://pypi.python.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
