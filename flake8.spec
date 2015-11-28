@@ -34,14 +34,11 @@ The modular source code checker. It is a wrapper around these tools:
 %setup -q
 
 %build
-%{__python3} setup.py build %{?with_tests:test}
+%py3_build %{?with_tests:test}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python3} setup.py install \
-	--skip-build \
-	--optimize=2 \
-	--root=$RPM_BUILD_ROOT
+%py3_install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
