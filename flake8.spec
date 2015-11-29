@@ -11,6 +11,7 @@ Group:		Development/Tools
 Source0:	https://pypi.python.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
 # Source0-md5:	6dea927949b94c9d9495ab24bcdf9cf0
 URL:		https://pypi.python.org/pypi/flake8
+BuildRequires:	rpmbuild(macros) >= 1.710
 BuildRequires:	python3-distribute
 BuildRequires:	python3-modules
 BuildRequires:	rpm-pythonprov
