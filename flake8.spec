@@ -114,14 +114,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with python2}
 %py_install
-cp -p $RPM_BUILD_ROOT%{_bindir}/flake8{,-2}
+mv $RPM_BUILD_ROOT%{_bindir}/flake8{,-2}
 %py_postclean
 %endif
 
 %if %{with python3}
 %py3_install
-cp -p $RPM_BUILD_ROOT%{_bindir}/flake8{,-3}
+mv $RPM_BUILD_ROOT%{_bindir}/flake8{,-3}
 %endif
+
+ln -s flake-%{!?with_python3:2}%{?with_python3:3} $RPM_BUILD_ROOT%{_bindir}/flake8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
