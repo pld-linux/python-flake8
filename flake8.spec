@@ -14,6 +14,7 @@ Group:		Development/Tools
 #Source0Download: https://pypi.python.org/simple/flake8/
 Source0:	https://pypi.python.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
 # Source0-md5:	a4585b3569b95c3f66acb8294a7f06ef
+Patch0:		%{name}-dependencies.patch
 URL:		https://pypi.python.org/pypi/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -99,6 +100,7 @@ dla narzędzi:
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %if %{with python2}
