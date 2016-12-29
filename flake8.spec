@@ -8,7 +8,7 @@ Summary:	The modular source code checker: pep8, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pep8, pyflakes itp.
 Name:		flake8
 Version:	2.5.4
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.python.org/simple/flake8/
