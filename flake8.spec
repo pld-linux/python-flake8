@@ -7,14 +7,13 @@
 Summary:	The modular source code checker: pep8, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pep8, pyflakes itp.
 Name:		flake8
-Version:	2.5.4
-Release:	2
+Version:	3.3.0
+Release:	1
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.python.org/simple/flake8/
-Source0:	https://pypi.python.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
-# Source0-md5:	a4585b3569b95c3f66acb8294a7f06ef
-Patch0:		%{name}-dependencies.patch
+Source0:	https://pypi.python.org/packages/47/64/382631de5fd8dab367bedeff6b5b55fd9a7c883daa44f4032636e2d203ca/%{name}-%{version}.tar.gz
+# Source0-md5:	3df622aac9bad27c04f34164609bbed8
 URL:		https://pypi.python.org/pypi/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -22,6 +21,8 @@ BuildRequires:	rpm-pythonprov
 BuildRequires:	python-modules >= 1:2.5
 BuildRequires:	python-setuptools
 %if %{with tests}
+BuildRequires:	python-configparser
+BuildRequires:	python-pycodestyle >= 2.0.0
 BuildRequires:	python-mccabe >= 0.2.1
 BuildRequires:	python-mock
 BuildRequires:	python-nose
@@ -33,6 +34,7 @@ BuildRequires:	python-pyflakes >= 0.8.1
 BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools
 %if %{with tests}
+BuildRequires:	python3-pycodestyle >= 2.0.0
 BuildRequires:	python3-mccabe >= 0.2.1
 BuildRequires:	python3-nose
 BuildRequires:	python3-pep8 >= 1.5.7
@@ -100,7 +102,6 @@ dla narzędzi:
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %if %{with python2}
@@ -132,7 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.rst CONTRIBUTORS.txt LICENSE README.rst
+%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8
 
 %if %{with python2}
