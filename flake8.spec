@@ -23,7 +23,7 @@ BuildRequires:	python-setuptools
 %if %{with tests}
 BuildRequires:	python-configparser
 BuildRequires:	python-mccabe >= 0.2.1
-BuildRequires:	python-mock >- 2.0.0
+BuildRequires:	python-mock >= 2.0.0
 BuildRequires:	python-nose
 BuildRequires:	python-pep8 >= 1.5.7
 BuildRequires:	python-pycodestyle >= 2.0.0
@@ -35,7 +35,7 @@ BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-mccabe >= 0.2.1
-BuildRequires:	python3-mock >- 2.0.0
+BuildRequires:	python3-mock >= 2.0.0
 BuildRequires:	python3-nose
 BuildRequires:	python3-pep8 >= 1.5.7
 BuildRequires:	python3-pycodestyle >= 2.0.0
