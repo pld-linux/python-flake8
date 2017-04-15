@@ -8,7 +8,7 @@ Summary:	The modular source code checker: pep8, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pep8, pyflakes itp.
 Name:		flake8
 Version:	3.3.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.python.org/simple/flake8/
@@ -22,11 +22,11 @@ BuildRequires:	python-modules >= 1:2.5
 BuildRequires:	python-setuptools
 %if %{with tests}
 BuildRequires:	python-configparser
-BuildRequires:	python-pycodestyle >= 2.0.0
 BuildRequires:	python-mccabe >= 0.2.1
-BuildRequires:	python-mock
+BuildRequires:	python-mock >- 2.0.0
 BuildRequires:	python-nose
 BuildRequires:	python-pep8 >= 1.5.7
+BuildRequires:	python-pycodestyle >= 2.0.0
 BuildRequires:	python-pyflakes >= 0.8.1
 %endif
 %endif
@@ -34,10 +34,11 @@ BuildRequires:	python-pyflakes >= 0.8.1
 BuildRequires:	python3-modules >= 1:3.2
 BuildRequires:	python3-setuptools
 %if %{with tests}
-BuildRequires:	python3-pycodestyle >= 2.0.0
 BuildRequires:	python3-mccabe >= 0.2.1
+BuildRequires:	python3-mock >- 2.0.0
 BuildRequires:	python3-nose
 BuildRequires:	python3-pep8 >= 1.5.7
+BuildRequires:	python3-pycodestyle >= 2.0.0
 BuildRequires:	python3-pyflakes >= 0.8.1
 %endif
 %endif
