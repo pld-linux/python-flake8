@@ -1,0 +1,13 @@
+--- flake8-3.3.0/setup.py.orig	2017-02-06 20:38:21.000000000 +0100
++++ flake8-3.3.0/setup.py	2017-04-17 11:04:33.964940324 +0200
+@@ -12,7 +12,9 @@
+ import flake8
+ 
+ 
+-tests_require = ['mock >= 2.0.0', 'pytest']
++tests_require = ['pytest']
++if (sys.version_info.major, sys.version_info.minor) < (3, 3):
++    tests_require.append('mock >= 2.0.0')
+ 
+ # NOTE(sigmavirus24): When updating these requirements, update them in
+ # setup.cfg as well.
