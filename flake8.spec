@@ -2,25 +2,26 @@
 # Conditional build:
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
-%bcond_without	tests	# do not perform "make test"
+%bcond_without	tests	# pytest tests
+%bcond_without	doc	# Sphinx documentation
 
 Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
-Version:	3.3.0
-Release:	3
+Version:	3.5.0
+Release:	1
 License:	MIT
 Group:		Development/Tools
-#Source0Download: https://pypi.python.org/simple/flake8/
+#Source0Download: https://pypi.org/simple/flake8/
 Source0:	https://files.pythonhosted.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
-# Source0-md5:	3df622aac9bad27c04f34164609bbed8
+# Source0-md5:	7e5fe39d578a2c2d0962b61b35b8c3fc
 Patch0:		%{name}-mock.patch
 URL:		https://gitlab.com/pycqa/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools >= 30
 %if %{with tests}
 BuildRequires:	python-configparser
 BuildRequires:	python-enum34
@@ -30,25 +31,29 @@ BuildRequires:	python-mock >= 2.0.0
 BuildRequires:	python-pycodestyle >= 2.0.0
 BuildRequires:	python-pycodestyle < 2.4.0
 BuildRequires:	python-pyflakes >= 1.5.0
-BuildRequires:	python-pyflakes < 1.6.0
+BuildRequires:	python-pyflakes < 1.7.0
 BuildRequires:	python-pytest
 BuildRequires:	python-pytest-runner
 %endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.4
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools >= 30
 %if %{with tests}
 BuildRequires:	python3-mccabe >= 0.6.0
 BuildRequires:	python3-mccabe < 0.7.0
 BuildRequires:	python3-pycodestyle >= 2.0.0
 BuildRequires:	python3-pycodestyle < 2.4.0
 BuildRequires:	python3-pyflakes >= 1.5.0
-BuildRequires:	python3-pyflakes < 1.6.0
+BuildRequires:	python3-pyflakes < 1.7.0
 BuildRequires:	python3-pytest
 BuildRequires:	python3-pytest-runner
 BuildRequires:	sed >= 4.0
 %endif
+%endif
+%if %{with doc}
+BuildRequires:	python3-sphinx-prompt
+BuildRequires:	sphinx-pdg-3
 %endif
 %if %{with python3}
 Requires:	python3-flake8 = %{version}-%{release}
@@ -109,6 +114,17 @@ dla narzędzi:
 - pycodestyle
 - skrypt McCabe autorstwa Neda Batcheldera
 
+%package -n python-flake8-apidocs
+Summary:	API documentation for Python flake8 module
+Summary(pl.UTF-8):	Dokumentacja API modułu Pythona flake8
+Group:		Documentation
+
+%description -n python-flake8-apidocs
+API documentation for Python flake8 module.
+
+%description -n python-flake8-apidocs -l pl.UTF-8
+Dokumentacja API modułu Pythona flake8.
+
 %prep
 %setup -q
 %patch0 -p1
@@ -125,6 +141,12 @@ dla narzędzi:
 %py3_build %{?with_tests:test}
 %endif
 
+%if %{with doc}
+cd docs/source
+PYTHONPATH=$(pwd)/../../src \
+sphinx-build-3 -b html . _build/html
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -137,6 +159,11 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %py3_install
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/flake8{,-3}
+
+# avoid dependencies on python3egg(configparser), python3egg(enum34)
+%{__sed} -i -e "/^\[:python_version *< *'3\.2']/,/^$/ d" \
+	-e "/^\[:python_version *< *'3\.4']/,/^$/ d" \
+	$RPM_BUILD_ROOT%{py3_sitescriptdir}/flake8-%{version}-py*.egg-info/requires.txt
 %endif
 
 ln -s flake-%{!?with_python3:2}%{?with_python3:3} $RPM_BUILD_ROOT%{_bindir}/flake8
@@ -146,12 +173,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8
 
 %if %{with python2}
 %files -n python-flake8
 %defattr(644,root,root,755)
+%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8-2
 %{py_sitescriptdir}/flake8
 %{py_sitescriptdir}/flake8-%{version}-py*.egg-info
@@ -160,7 +187,14 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-flake8
 %defattr(644,root,root,755)
+%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8-3
 %{py3_sitescriptdir}/flake8
 %{py3_sitescriptdir}/flake8-%{version}-py*.egg-info
+%endif
+
+%if %{with doc}
+%files -n python-flake8-apidocs
+%defattr(644,root,root,755)
+%doc docs/source/_build/html/{_modules,_static,internal,plugin-development,release-notes,user,*.html,*.js}
 %endif
