@@ -15,6 +15,7 @@ Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
 Source0:	https://files.pythonhosted.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
 # Source0-md5:	147957dd7f8af16117ae5c3e6b82df74
+Patch0:		%{name}-req.patch
 URL:		https://gitlab.com/pycqa/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -130,6 +131,7 @@ Dokumentacja API modułu Pythona flake8.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %if %{with python2}
