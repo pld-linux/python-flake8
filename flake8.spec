@@ -9,7 +9,7 @@ Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
 Version:	3.7.8
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
