@@ -8,20 +8,21 @@
 Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
-Version:	3.7.8
-Release:	2
+Version:	3.7.9
+Release:	1
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
 Source0:	https://files.pythonhosted.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
-# Source0-md5:	147957dd7f8af16117ae5c3e6b82df74
+# Source0-md5:	7dc0ce36b6cf49b13b46bb37ddca80c5
 Patch0:		%{name}-req.patch
+Patch1:		%{name}-duplicate.patch
 URL:		https://gitlab.com/pycqa/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-setuptools >= 30
+BuildRequires:	python-setuptools >= 1:30
 %if %{with tests}
 BuildRequires:	python-configparser
 BuildRequires:	python-entrypoints >= 0.3
@@ -41,7 +42,7 @@ BuildRequires:	python-typing
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.4
-BuildRequires:	python3-setuptools >= 30
+BuildRequires:	python3-setuptools >= 1:30
 %if %{with tests}
 BuildRequires:	python3-entrypoints >= 0.3
 BuildRequires:	python3-entrypoints < 0.4
@@ -132,6 +133,7 @@ Dokumentacja API modułu Pythona flake8.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %if %{with python2}

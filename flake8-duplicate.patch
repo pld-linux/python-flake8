@@ -1,0 +1,13 @@
+Don't register plugin if it's already registered; fixes tests with flake8 already installed.
+--- flake8-3.7.9/src/flake8/plugins/manager.py.orig	2020-01-12 19:41:12.510479228 +0100
++++ flake8-3.7.9/src/flake8/plugins/manager.py	2020-01-12 19:43:26.916417755 +0100
+@@ -268,6 +268,9 @@
+             Is this a repo-local plugin?
+         """
+         name = entry_point.name
++        if name in self.names:
++            LOG.warning('Skipping duplicate plugin "%s"' % name)
++            return
+         self.plugins[name] = Plugin(name, entry_point, local=local)
+         self.names.append(name)
+         LOG.debug('Loaded %r for plugin "%s".', self.plugins[name], name)
