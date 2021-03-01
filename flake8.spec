@@ -9,7 +9,7 @@ Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
 Version:	3.7.9
-Release:	2
+Release:	3
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
@@ -85,7 +85,15 @@ dla narzędzi:
 Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Group:		Libraries/Python
+Requires:	python-entrypoints >= 0.3
+Requires:	python-entrypoints < 0.4
+Requires:	python-mccabe >= 0.6.0
+Requires:	python-mccabe < 0.7.0
 Requires:	python-modules >= 1:2.7
+Requires:	python-pycodestyle >= 2.5.0
+Requires:	python-pycodestyle < 2.6.0
+Requires:	python-pyflakes >= 2.1.0
+Requires:	python-pyflakes < 2.2.0
 
 %description -n python-flake8
 The modular source code checker. It is a wrapper around these tools:
@@ -104,7 +112,15 @@ dla narzędzi:
 Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Group:		Libraries/Python
+Requires:	python3-entrypoints >= 0.3
+Requires:	python3-entrypoints < 0.4
+Requires:	python3-mccabe >= 0.6.0
+Requires:	python3-mccabe < 0.7.0
 Requires:	python3-modules >= 1:3.4
+Requires:	python3-pycodestyle >= 2.5.0
+Requires:	python3-pycodestyle < 2.6.0
+Requires:	python3-pyflakes >= 2.1.0
+Requires:	python3-pyflakes < 2.2.0
 
 %description -n python3-flake8
 The modular source code checker. It is a wrapper around these tools:
