@@ -5,18 +5,18 @@
 %bcond_without	tests	# pytest tests
 %bcond_without	doc	# Sphinx documentation
 
-Summary:	The modular source code checker: pycodestyle, pyflakes and co
+Summary:	The modular source code checker: pycodestyle, pyflakes and co.
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
-Version:	3.7.9
-Release:	3
+# before updating to 4.x fork python-flake8.spec with last 3.x version
+Version:	3.9.2
+Release:	1
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
 Source0:	https://files.pythonhosted.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
-# Source0-md5:	7dc0ce36b6cf49b13b46bb37ddca80c5
-Patch0:		%{name}-req.patch
-Patch1:		%{name}-duplicate.patch
+# Source0-md5:	5c102972d3d0f35255c56a20613fcec5
+Patch0:		%{name}-duplicate.patch
 URL:		https://gitlab.com/pycqa/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -25,33 +25,33 @@ BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-setuptools >= 1:30
 %if %{with tests}
 BuildRequires:	python-configparser
-BuildRequires:	python-entrypoints >= 0.3
-BuildRequires:	python-entrypoints < 0.4
 BuildRequires:	python-enum34
 BuildRequires:	python-functools32
+BuildRequires:	python-importlib_metadata
 BuildRequires:	python-mccabe >= 0.6.0
 BuildRequires:	python-mccabe < 0.7.0
 BuildRequires:	python-mock >= 2.0.0
-BuildRequires:	python-pycodestyle >= 2.5.0
-BuildRequires:	python-pycodestyle < 2.6.0
-BuildRequires:	python-pyflakes >= 2.1.0
-BuildRequires:	python-pyflakes < 2.2.0
+BuildRequires:	python-pycodestyle >= 2.7.0
+BuildRequires:	python-pycodestyle < 2.8.0
+BuildRequires:	python-pyflakes >= 2.3.0
+BuildRequires:	python-pyflakes < 2.4.0
 BuildRequires:	python-pytest
 BuildRequires:	python-typing
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.4
+BuildRequires:	python3-modules >= 1:3.5
 BuildRequires:	python3-setuptools >= 1:30
 %if %{with tests}
-BuildRequires:	python3-entrypoints >= 0.3
-BuildRequires:	python3-entrypoints < 0.4
+%if "%{py3_ver}" < "3.8"
+BuildRequires:	python3-importlib_metadata
+%endif
 BuildRequires:	python3-mccabe >= 0.6.0
 BuildRequires:	python3-mccabe < 0.7.0
-BuildRequires:	python3-pycodestyle >= 2.5.0
-BuildRequires:	python3-pycodestyle < 2.6.0
-BuildRequires:	python3-pyflakes >= 2.1.0
-BuildRequires:	python3-pyflakes < 2.2.0
+BuildRequires:	python3-pycodestyle >= 2.7.0
+BuildRequires:	python3-pycodestyle < 2.8.0
+BuildRequires:	python3-pyflakes >= 2.3.0
+BuildRequires:	python3-pyflakes < 2.4.0
 BuildRequires:	python3-pytest
 BuildRequires:	sed >= 4.0
 %endif
@@ -82,18 +82,16 @@ dla narzędzi:
 - skrypt McCabe autorstwa Neda Batcheldera
 
 %package -n python-flake8
-Summary:	The modular source code checker: pycodestyle, pyflakes and co
+Summary:	The modular source code checker: pycodestyle, pyflakes and co.
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Group:		Libraries/Python
-Requires:	python-entrypoints >= 0.3
-Requires:	python-entrypoints < 0.4
 Requires:	python-mccabe >= 0.6.0
 Requires:	python-mccabe < 0.7.0
 Requires:	python-modules >= 1:2.7
-Requires:	python-pycodestyle >= 2.5.0
-Requires:	python-pycodestyle < 2.6.0
-Requires:	python-pyflakes >= 2.1.0
-Requires:	python-pyflakes < 2.2.0
+Requires:	python-pycodestyle >= 2.7.0
+Requires:	python-pycodestyle < 2.8.0
+Requires:	python-pyflakes >= 2.3.0
+Requires:	python-pyflakes < 2.4.0
 
 %description -n python-flake8
 The modular source code checker. It is a wrapper around these tools:
@@ -112,15 +110,13 @@ dla narzędzi:
 Summary:	The modular source code checker: pycodestyle, pyflakes and co
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Group:		Libraries/Python
-Requires:	python3-entrypoints >= 0.3
-Requires:	python3-entrypoints < 0.4
 Requires:	python3-mccabe >= 0.6.0
 Requires:	python3-mccabe < 0.7.0
 Requires:	python3-modules >= 1:3.4
-Requires:	python3-pycodestyle >= 2.5.0
-Requires:	python3-pycodestyle < 2.6.0
-Requires:	python3-pyflakes >= 2.1.0
-Requires:	python3-pyflakes < 2.2.0
+Requires:	python3-pycodestyle >= 2.7.0
+Requires:	python3-pycodestyle < 2.8.0
+Requires:	python3-pyflakes >= 2.3.0
+Requires:	python3-pyflakes < 2.4.0
 
 %description -n python3-flake8
 The modular source code checker. It is a wrapper around these tools:
@@ -149,13 +145,13 @@ Dokumentacja API modułu Pythona flake8.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %if %{with python2}
 %py_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd)/src \
 %{__python} -m pytest -rw tests
 %endif
@@ -168,6 +164,7 @@ PYTHONPATH=$(pwd)/src \
 %py3_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd)/src \
 %{__python3} -m pytest -rw tests
 %endif
