@@ -10,7 +10,7 @@ Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycod
 Name:		flake8
 # before updating to 4.x fork python-flake8.spec with last 3.x version
 Version:	3.9.2
-Release:	2
+Release:	3
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
