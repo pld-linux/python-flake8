@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
-%bcond_without	tests	# pytest tests
+%bcond_with	tests	# pytest tests
 %bcond_without	doc	# Sphinx documentation
 
 Summary:	The modular source code checker: pycodestyle, pyflakes and co.
