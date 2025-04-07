@@ -1,20 +1,22 @@
 #
 # Conditional build:
-%bcond_with	python2	# CPython 2.x module
+%bcond_without	python2	# CPython 2.x module
 %bcond_without	python3	# CPython 3.x module
 %bcond_with	tests	# pytest tests
+%bcond_without	doc	# Sphinx documentation
 
 Summary:	The modular source code checker: pycodestyle, pyflakes and co.
 Summary(pl.UTF-8):	Modularne narzędzie do sprawdzania kodu źródłowego: pycodestyle, pyflakes itp.
 Name:		flake8
 # before updating to 4.x fork python-flake8.spec with last 3.x version
-Version:	7.2.0
-Release:	1
+Version:	3.9.2
+Release:	5
 License:	MIT
 Group:		Development/Tools
 #Source0Download: https://pypi.org/simple/flake8/
 Source0:	https://files.pythonhosted.org/packages/source/f/flake8/%{name}-%{version}.tar.gz
-# Source0-md5:	5b0c69330b5cbdf639a33c91b896f7b1
+# Source0-md5:	5c102972d3d0f35255c56a20613fcec5
+Patch0:		%{name}-duplicate.patch
 URL:		https://gitlab.com/pycqa/flake8
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	rpm-pythonprov
@@ -54,12 +56,15 @@ BuildRequires:	python3-pytest
 BuildRequires:	sed >= 4.0
 %endif
 %endif
+%if %{with doc}
+BuildRequires:	python3-sphinx-prompt
+BuildRequires:	sphinx-pdg-3 >= 1.3
+%endif
 %if %{with python3}
 Requires:	python3-flake8 = %{version}-%{release}
 %else
 Requires:	python-flake8 = %{version}-%{release}
 %endif
-Obsoletes:	python-flake8-apidocs < 7.2.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -126,9 +131,20 @@ dla narzędzi:
 - pycodestyle
 - skrypt McCabe autorstwa Neda Batcheldera
 
+%package -n python-flake8-apidocs
+Summary:	API documentation for Python flake8 module
+Summary(pl.UTF-8):	Dokumentacja API modułu Pythona flake8
+Group:		Documentation
+
+%description -n python-flake8-apidocs
+API documentation for Python flake8 module.
+
+%description -n python-flake8-apidocs -l pl.UTF-8
+Dokumentacja API modułu Pythona flake8.
 
 %prep
 %setup -q
+%patch -P 0 -p1
 
 %build
 %if %{with python2}
@@ -142,6 +158,9 @@ PYTHONPATH=$(pwd)/src \
 %endif
 
 %if %{with python3}
+# don't require standalone mock
+%{__sed} -i -e 's/import mock/from unittest import mock/' $(grep 'import mock' tests/ -rl)
+
 %py3_build
 
 %if %{with tests}
@@ -149,6 +168,12 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd)/src \
 %{__python3} -m pytest -rw tests
 %endif
+%endif
+
+%if %{with doc}
+cd docs/source
+PYTHONPATH=$(pwd)/../../src \
+sphinx-build-3 -b html . _build/html
 %endif
 
 %install
@@ -177,7 +202,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files -n python-flake8
 %defattr(644,root,root,755)
-%doc LICENSE README.rst
+%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8-2
 %{py_sitescriptdir}/flake8
 %{py_sitescriptdir}/flake8-%{version}-py*.egg-info
@@ -186,8 +211,14 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-flake8
 %defattr(644,root,root,755)
-%doc LICENSE README.rst
+%doc CONTRIBUTORS.txt LICENSE README.rst
 %attr(755,root,root) %{_bindir}/flake8-3
 %{py3_sitescriptdir}/flake8
 %{py3_sitescriptdir}/flake8-%{version}-py*.egg-info
+%endif
+
+%if %{with doc}
+%files -n python-flake8-apidocs
+%defattr(644,root,root,755)
+%doc docs/source/_build/html/{_modules,_static,internal,plugin-development,release-notes,user,*.html,*.js}
 %endif
